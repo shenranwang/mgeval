@@ -6,7 +6,8 @@ import pretty_midi
 import numpy as np
 import sys
 import os
-import midi
+import symusic
+# import midi
 import glob
 import math
 
@@ -22,8 +23,8 @@ def extract_feature(_file):
         dict(pretty_midi: pretty_midi object,
              midi_pattern: midi pattern contains a list of tracks)
     """
-    feature = {'pretty_midi': pretty_midi.PrettyMIDI(_file),
-               'midi_pattern': midi.read_midifile(_file)}
+    feature = {'pretty_midi': pretty_midi.PrettyMIDI(_file),}
+               # 'midi_pattern': midi.read_midifile(_file)}
     return feature
 
 
@@ -41,6 +42,7 @@ class metrics(object):
         used_pitch = np.sum(sum_notes > 0)
         return used_pitch
 
+    '''
     def bar_used_pitch(self, feature, track_num=1, num_bar=None):
         """
         bar_used_pitch (Pitch count per bar)
@@ -164,6 +166,7 @@ class metrics(object):
                       continue
                     used_notes[idx] += 1
         return used_notes
+    '''
 
     def total_pitch_class_histogram(self, feature):
         """
@@ -250,7 +253,7 @@ class metrics(object):
         'transition_matrix': shape of [12, 12], transition_matrix of 12 x 12.
         """
         pm_object = feature['pretty_midi']
-        transition_matrix = pm_object.get_pitch_class_transition_matrix()
+        transition_matrix = pm_object.get_pitch_class_transition_matrix(normalize=True)
 
         if normalize == 0:
             return transition_matrix
@@ -264,7 +267,7 @@ class metrics(object):
             return transition_matrix / sum(sum(transition_matrix))
 
         else:
-            print "invalid normalization mode, return unnormalized matrix"
+            print("invalid normalization mode, return unnormalized matrix")
             return transition_matrix
 
     def pitch_range(self, feature):
@@ -280,6 +283,7 @@ class metrics(object):
         p_range = np.max(pitch_index) - np.min(pitch_index)
         return p_range
 
+    '''
     def avg_pitch_shift(self, feature, track_num=1):
         """
         avg_pitch_shift (Average pitch interval):
@@ -312,6 +316,7 @@ class metrics(object):
                     counter += 1
         pitch_shift = np.mean(abs(d_note))
         return pitch_shift
+    '''
 
     def avg_IOI(self, feature):
         """
@@ -328,6 +333,7 @@ class metrics(object):
         avg_ioi = np.mean(ioi)
         return avg_ioi
 
+    '''
     def note_length_hist(self, feature, track_num=1, normalize=True, pause_event=False):
         """
         note_length_hist (Note length histogram):
@@ -547,8 +553,9 @@ class metrics(object):
             return transition_matrix / sum(sum(transition_matrix))
 
         else:
-            print "invalid normalization mode, return unnormalized matrix"
+            print("invalid normalization mode, return unnormalized matrix")
             return transition_matrix
+    '''
 
     # def chord_dependency(self, feature, bar_chord, bpm=120, num_bar=None, track_num=1):
     #     pm_object = feature['pretty_midi']

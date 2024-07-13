@@ -1,0 +1,12 @@
+name: mgeval
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python>=3.11.5
+  - pip
+  - pip:
+    - scipy
+    - scikit-learn
+    - numpy
+    - pretty-midi
